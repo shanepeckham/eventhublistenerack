@@ -4,13 +4,18 @@ FROM node:boron
 RUN mkdir -p /usr/src/eventlistener
 WORKDIR /usr/src/eventlistener
 
+# EH
 ENV EVENTHUBCONNSTRING=
 ENV EVENTHUBPATH=
-ENV INSIGHTSKEY=
-ENV SOURCE=
-ENV PROCESSENDPOINT=
 ENV PARTITIONKEY=
-ENV PAUSE=
+# ACK Logging
+ENV TEAMNAME=
+# Mongo/Cosmos
+ENV MONGOURL=
+# RabbitMQ
+ENV RABBITMQHOST=
+ENV PROCESSENDPOINT=
+ENV PARTITIONKEY=[0,1,2]
 
 # Install app dependencies
 RUN npm install

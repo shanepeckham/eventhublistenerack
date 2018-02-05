@@ -14,7 +14,8 @@ var partitionKey = process.env.PARTITIONKEY;
 var connectionString = process.env.EVENTHUBCONNSTRING;
 var eventHubPath = process.env.EVENTHUBPATH;
 var processendpoint = process.env.PROCESSENDPOINT;
-var insightsKey = process.env.INSIGHTSKEY;
+var insightsKey = "23c6b1ec-ca92-4083-86b6-eba851af9032";
+var teamname = process.env.TEAMNAME;
 
 if (insightsKey != "") {
   appInsights.setup(insightsKey).start();
@@ -29,7 +30,7 @@ var printError = function (err) {
   console.error(err.message);
 };
 
-console.log('Listening on partitiion ' + partitionKey);
+console.log('Listening on partition ' + partitionKey);
 
 var printEvent = function (ehEvent) {
   console.log('Event Received: ');
@@ -62,17 +63,17 @@ var printEvent = function (ehEvent) {
     session.send('error!: ' + e.message);
   }
 
-  try {
+//  try {
 
     if (insightsKey != "") {
       let appclient = appInsights.defaultClient;
-      appclient.trackEvent("Event Order " + source + ": " + orderId);
+      appclient.trackEvent("EventHubListener:v4 " + teamname );
     }
-  }
+ // }
 
-  catch (e) {
+ /*  catch (e) {
     console.error("AppInsights " + e.message);
-  }
+  } */
 
 };
 
