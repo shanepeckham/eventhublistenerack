@@ -8,7 +8,8 @@ The following environment variables need to be passed to the container:
 ENV TEAMNAME=[YourTeamName]
 
 ### Event Hub
-ENV EVENTURL="https://[youreventhub].servicebus.windows.net/[eventhubname]"
+ENV EVENTHUBCONNSTRING= "Endpoint=sb://[youreventhub].servicebus.windows.net/;SharedAccessKeyName=[keyname];SharedAccessKey=[key]"
+ENV EVENTHUBPATH=[eventhubname]
 ENV EVENTPOLICYNAME="[policy key name]"
 ENV EVENTPOLICYKEY="[policy key]"
 ENV PARTITIONKEY=[0,1,2]
