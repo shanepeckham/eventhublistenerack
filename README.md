@@ -1,4 +1,4 @@
-# EventHub Listener - The Azure Kubernetes Challenge
+# EventHub Listener - TACK
 
 A containerised nodejs event listener that listens to Azure Event Hub and passes requests on to an internal endpoint
 
