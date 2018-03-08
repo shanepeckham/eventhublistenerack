@@ -11,7 +11,7 @@ ENV TEAMNAME=[YourTeamName]
 ```
 ENV EVENTHUBCONNSTRING= "Endpoint=sb://[youreventhub].servicebus.windows.net/;SharedAccessKeyName=[keyname];SharedAccessKey=[key]"
 ENV EVENTHUBPATH=[eventhubname]
-ENV PARTITIONKEY=[0,1,2]
+ENV PARTITIONKEY=[] ** for each partition on your eventhub
 ### For Process Endpoint
 ENV PROCESSENDPOINT=http://fulfillorder.[namespace].svc.cluster.local:8080/v1/order/
 ```
