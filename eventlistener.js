@@ -8,6 +8,37 @@ var util = require("util");
 let appInsights = require('applicationinsights');
 var request = require('request');
 
+// Let's validate and spool the ENV VARS
+if (process.env.PARTITIONKEY.length == 0) {
+  console.log("The environment variable PARTITIONKEY has not been set" );
+} else {
+  console.log("The environment variable PARTITIONKEY is " + process.env.PARTITIONKEY);
+}
+
+if (process.env.EVENTHUBCONNSTRING.length == 0) {
+  console.log("The environment variable EVENTHUBCONNSTRING has not been set" );
+} else {
+  console.log("The environment variable EVENTHUBCONNSTRING is " +  process.env.EVENTHUBCONNSTRING);
+}
+
+if (process.env.EVENTHUBPATH.length == 0) {
+  console.log("The environment variable EVENTHUBPATH has not been set" );
+} else {
+  console.log("The environment variable EVENTHUBPATH is " +  process.env.EVENTHUBPATH);
+}
+
+if (process.env.PROCESSENDPOINT.length == 0) {
+  console.log("The environment variable PROCESSENDPOINT has not been set" );
+} else {
+  console.log("The environment variable PROCESSENDPOINT is " +  process.env.PROCESSENDPOINT);
+}
+
+if (process.env.TEAMNAME.length == 0) {
+  console.log("The environment variable TEAMNAME has not been set");
+} else {
+  console.log("The environment variable TEAMNAME is " +  process.env.TEAMNAME);
+}
+
 // Start
 var source = process.env.SOURCE;
 var partitionKey = process.env.PARTITIONKEY;
