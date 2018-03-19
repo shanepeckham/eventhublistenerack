@@ -60,13 +60,9 @@ var printError = function (err) {
 console.log('Listening on partition ' + partitionKey);
 
 var printEvent = function (ehEvent) {
-  console.log('Event Received: ');
   var jj = JSON.stringify(ehEvent.body);
-  let bufferOriginal = Buffer.from(JSON.parse(jj).data);
-  console.log(bufferOriginal.toString('utf8'));
-  var jstring = bufferOriginal.toString('utf8');
-
-  var orderId = jstring.substring(10, 34);
+  console.log('Event Received: ' + jj);
+  var orderId = ehEvent.body.order;
 
   // Set the headers
   var headers = {
@@ -85,9 +81,11 @@ var printEvent = function (ehEvent) {
   try {
     request(options, function () {
     });
+    console.log('Event Processed and sent to Process Endpoint');    
   }
   catch (e) {
     session.send('error!: ' + e.message);
+    console.log('Error sending to Process Endpoint: ' + e.message);   
   }
 
 //  try {
