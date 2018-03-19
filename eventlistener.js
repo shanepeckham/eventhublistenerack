@@ -9,12 +9,6 @@ let appInsights = require('applicationinsights');
 var request = require('request');
 
 // Let's validate and spool the ENV VARS
-if (process.env.PARTITIONKEY.length == 0) {
-  console.log("The environment variable PARTITIONKEY has not been set" );
-} else {
-  console.log("The environment variable PARTITIONKEY is " + process.env.PARTITIONKEY);
-}
-
 if (process.env.EVENTHUBCONNSTRING.length == 0) {
   console.log("The environment variable EVENTHUBCONNSTRING has not been set" );
 } else {
@@ -41,7 +35,6 @@ if (process.env.TEAMNAME.length == 0) {
 
 // Start
 var source = process.env.SOURCE;
-var partitionKey = process.env.PARTITIONKEY;
 var connectionString = process.env.EVENTHUBCONNSTRING;
 var eventHubPath = process.env.EVENTHUBPATH;
 var processendpoint = process.env.PROCESSENDPOINT;
@@ -51,6 +44,9 @@ var teamname = process.env.TEAMNAME;
 if (insightsKey != "") {
   appInsights.setup(insightsKey).start();
 }
+
+// Get a random partition key between 0 and 3
+var partitionKey = Math.floor(Math.random() * 3);
 
 // The Event Hubs SDK can also be used with an Azure IoT Hub connection string.
 // In that case, the eventHubPath variable is not used and can be left undefined.
