@@ -11,10 +11,6 @@ ENV EVENTHUBPATH=
 # ACK Logging
 ENV TEAMNAME=
 
-# RabbitMQ
-ENV RABBITMQHOST=
-ENV PROCESSENDPOINT=
-
 # Install app dependencies
 RUN npm install
 
