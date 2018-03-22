@@ -11,10 +11,11 @@ ENV EVENTHUBPATH=
 # ACK Logging
 ENV TEAMNAME=
 
+# Bundle app source
+COPY . .
+
 # Install app dependencies
 RUN npm install
 
-# Bundle app source
-ADD / . 
 
 CMD [ "node", "eventlistener.js" ]
