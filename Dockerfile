@@ -7,20 +7,19 @@ WORKDIR /usr/src/eventlistener
 # EH
 ENV EVENTHUBCONNSTRING=
 ENV EVENTHUBPATH=
-ENV PARTITIONKEY=
+
 # ACK Logging
 ENV TEAMNAME=
-# Mongo/Cosmos
-ENV MONGOURL=
-# RabbitMQ
-ENV RABBITMQHOST=
-ENV PROCESSENDPOINT=
-ENV PARTITIONKEY=[0,1,2]
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
 # Install app dependencies
 RUN npm install
 
 # Bundle app source
-ADD / . 
+COPY . .
 
 CMD [ "node", "eventlistener.js" ]
