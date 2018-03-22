@@ -11,11 +11,15 @@ ENV EVENTHUBPATH=
 # ACK Logging
 ENV TEAMNAME=
 
-# Bundle app source
-COPY . .
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
 
 # Install app dependencies
 RUN npm install
 
+# Bundle app source
+COPY . .
 
 CMD [ "node", "eventlistener.js" ]
