@@ -1,2 +1,2 @@
-docker build -t shanepeckham/eventhublistenerack:v7 . 
-docker push shanepeckham/eventhublistenerack:v7
+docker build -t shanepeckham/eventhublistenerack:vtest . 
+docker push shanepeckham/eventhublistenerack:vtest
