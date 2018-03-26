@@ -45,9 +45,6 @@ if (insightsKey != "") {
   appInsights.setup(insightsKey).start();
 }
 
-// Get a random partition key between 0 and 3
-var partitionKey = Math.floor(Math.random() * 3);
-
 // The Event Hubs SDK can also be used with an Azure IoT Hub connection string.
 // In that case, the eventHubPath variable is not used and can be left undefined.
 
@@ -57,7 +54,6 @@ var printError = function (err) {
   console.error(err.message);
 };
 
-console.log('Listening on partition ' + partitionKey);
 
 var printEvent = function (ehEvent) {
   var jj = JSON.stringify(ehEvent.body);
@@ -105,9 +101,15 @@ var printEvent = function (ehEvent) {
 var client = EventHubClient.fromConnectionString(connectionString, eventHubPath);
 var receiveAfterTime = Date.now() - 5000;
 
-
+// Create a receiver per partition
 client.open()
-return client.createReceiver('$Default', partitionKey, { 'startAfterTime': receiveAfterTime }).then(function (receiver) {
-  receiver.on('errorReceived', printError);
-  receiver.on('message', printEvent);
-}).catch(printError);
+      .then(client.getPartitionIds.bind(client))
+      .then(function (partitionIds) {
+        return Promise.map(partitionIds, function (partitionId) {
+          return client.createReceiver('$Default', partitionId, { 'startAfterTime' : receiveAfterTime}).then(function(receiver) {
+            receiver.on('errorReceived', printError);
+            receiver.on('message', printEvent);
+          });
+        });
+      })
+.catch(printError);
