@@ -10,27 +10,27 @@ var request = require('request');
 
 // Let's validate and spool the ENV VARS
 if (process.env.EVENTHUBCONNSTRING.length == 0) {
-  console.log("The environment variable EVENTHUBCONNSTRING has not been set" );
+  console.log("The environment variable EVENTHUBCONNSTRING has not been set");
 } else {
-  console.log("The environment variable EVENTHUBCONNSTRING is " +  process.env.EVENTHUBCONNSTRING);
+  console.log("The environment variable EVENTHUBCONNSTRING is " + process.env.EVENTHUBCONNSTRING);
 }
 
 if (process.env.EVENTHUBPATH.length == 0) {
-  console.log("The environment variable EVENTHUBPATH has not been set" );
+  console.log("The environment variable EVENTHUBPATH has not been set");
 } else {
-  console.log("The environment variable EVENTHUBPATH is " +  process.env.EVENTHUBPATH);
+  console.log("The environment variable EVENTHUBPATH is " + process.env.EVENTHUBPATH);
 }
 
 if (process.env.PROCESSENDPOINT.length == 0) {
-  console.log("The environment variable PROCESSENDPOINT has not been set" );
+  console.log("The environment variable PROCESSENDPOINT has not been set");
 } else {
-  console.log("The environment variable PROCESSENDPOINT is " +  process.env.PROCESSENDPOINT);
+  console.log("The environment variable PROCESSENDPOINT is " + process.env.PROCESSENDPOINT);
 }
 
 if (process.env.TEAMNAME.length == 0) {
   console.log("The environment variable TEAMNAME has not been set");
 } else {
-  console.log("The environment variable TEAMNAME is " +  process.env.TEAMNAME);
+  console.log("The environment variable TEAMNAME is " + process.env.TEAMNAME);
 }
 
 // Start
@@ -65,36 +65,40 @@ var printEvent = function (ehEvent) {
     'Content-Type': 'application/json'
   };
 
-  // Configure the request
-  var options = {
-    url: processendpoint,
-    method: 'POST',
-    headers: headers,
-    json: { 'OrderId': orderId }
-  };
+  if (processendpoint != "") {
+    // Configure the request
+    var options = {
+      url: processendpoint,
+      method: 'POST',
+      headers: headers,
+      json: {
+        'OrderId': orderId
+      }
+    };
 
-  // Start the request
-  try {
-    request(options, function () {
+    // Start the request
+    console.log('attempting to POST order to fulfill api: ' + processendpoint);
+    request(options, function (error, response, body) {
+      console.log('statusCode:', response && response.statusCode);
+      console.log('error:', error);
+      console.log('body:', body);
+
+      // Acknowledge the message if we don't have errors
+      if (!error) {
+
+      }
     });
-    console.log('Event Processed and sent to Process Endpoint');    
-  }
-  catch (e) {
-    session.send('error!: ' + e.message);
-    console.log('Error sending to Process Endpoint: ' + e.message);   
+  } // we have a process endpoint
+  else {
+    console.log('process endpoint not configured at PROCESSENDPOINT');
   }
 
-//  try {
-
-    if (insightsKey != "") {
-      let appclient = appInsights.defaultClient;
-      appclient.trackEvent("EventHubListener:v4 " + teamname );
-    }
- // }
-
- /*  catch (e) {
+  try {
+    let appclient = appInsights.defaultClient;
+    appclient.trackEvent("EventHubListener: " + teamname);
+  } catch (e) {
     console.error("AppInsights " + e.message);
-  } */
+  }
 
 };
 
@@ -103,13 +107,15 @@ var receiveAfterTime = Date.now() - 5000;
 
 // Create a receiver per partition
 client.open()
-      .then(client.getPartitionIds.bind(client))
-      .then(function (partitionIds) {
-        return Promise.map(partitionIds, function (partitionId) {
-          return client.createReceiver('$Default', partitionId, { 'startAfterTime' : receiveAfterTime}).then(function(receiver) {
-            receiver.on('errorReceived', printError);
-            receiver.on('message', printEvent);
-          });
-        });
-      })
-.catch(printError);
+  .then(client.getPartitionIds.bind(client))
+  .then(function (partitionIds) {
+    return Promise.map(partitionIds, function (partitionId) {
+      return client.createReceiver('$Default', partitionId, {
+        'startAfterTime': receiveAfterTime
+      }).then(function (receiver) {
+        receiver.on('errorReceived', printError);
+        receiver.on('message', printEvent);
+      });
+    });
+  })
+  .catch(printError);
