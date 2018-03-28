@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/shanepeckham/eventhublistenerack.svg?style=svg)](https://circleci.com/gh/shanepeckham/eventhublistenerack)
+
 # EventHub Listener - TACK
 
 A containerised nodejs event listener that listens to Azure Event Hub and passes requests on to an internal endpoint
