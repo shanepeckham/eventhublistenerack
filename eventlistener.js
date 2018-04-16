@@ -95,7 +95,15 @@ var printEvent = function (ehEvent) {
 
   try {
     let appclient = appInsights.defaultClient;
-    appclient.trackEvent("EventHubListener: " + teamname);
+    appclient.trackEvent({
+      name: "EventHubListener: - Team Name " + teamname,
+      properties: {
+        team: teamname,
+        challenge: "4-eventlistener",
+        type: "eventhub"
+      }
+    });
+
   } catch (e) {
     console.error("AppInsights " + e.message);
   }
